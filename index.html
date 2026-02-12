@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Great Books Tutor — Your Personal AI Book Tutor</title>
+  <meta name="description" content="Your personal book tutor for the greatest books of all time. 2 new books every week. AI voice conversations with an expert on each book.">
+  <meta property="og:title" content="Great Books Tutor — Your Personal AI Book Tutor">
+  <meta property="og:description" content="AI voice conversations with an expert tutor for the greatest books of all time. 2 new books every week. Try free for 7 days.">
+  <meta property="og:image" content="https://greatest-book-tutor.com/og-image.jpg">
+  <meta property="og:url" content="https://greatest-book-tutor.com/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Great Books Tutor — Your Personal AI Book Tutor">
+  <meta name="twitter:description" content="AI voice conversations with an expert tutor for the greatest books of all time. 2 new books every week. Try free for 7 days.">
+  <meta name="twitter:image" content="https://greatest-book-tutor.com/og-image.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+  <link rel="canonical" href="https://greatest-book-tutor.com/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Great Books Tutor",
+    "url": "https://greatest-book-tutor.com",
+    "description": "Your personal AI book tutor for the greatest books of all time.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "maximilian.rehn@gmail.com",
+      "contactType": "customer service"
+    },
+    "sameAs": ["https://x.com/wizard_mili"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Great Books Tutor",
+    "url": "https://greatest-book-tutor.com",
+    "description": "Your personal AI book tutor for the greatest books of all time. AI voice conversations with an expert on each book."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Great Books Tutor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Great Books Tutor provides AI-powered voice tutors for the greatest books of all time. Each tutor is an expert on a specific book and discusses it with you one-on-one through natural voice conversation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the book tutor work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Your book tutor is an AI-powered voice agent that you talk to out loud. It explains the key ideas from the book, asks you questions to help you understand, and adapts to your level—like a private tutor who has read the book cover to cover."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to have read the books?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No—that's the whole point. Your book tutor walks you through everything. You'll understand the key ideas as if you'd read it yourself."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does Great Books Tutor cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Plans start at $4.99 for your first month (then $14.99/mo for 2 books per month). The Monthly plan is $49/mo for 8 books per month, and the Pro plan is $99/mo for 20 books per month."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I cancel anytime?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Cancel anytime from your account—no questions asked. You'll keep access to any sessions you've already received."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      color: #1a1a1a;
+      background: #fafafa;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #eee;
+      padding: 0 24px;
+    }
+
+    nav .nav-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 56px;
+    }
+
+    nav .nav-logo {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111;
+      text-decoration: none;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    nav .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #555;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav .nav-links a:hover {
+      color: #2563eb;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      text-align: center;
+      padding: 120px 24px 80px;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      color: #111;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: #2563eb;
+    }
+
+    .hero .subtitle {
+      font-size: 1.25rem;
+      color: #555;
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .hero .price-anchor {
+      font-size: 1.1rem;
+      color: #777;
+      margin-bottom: 40px;
+    }
+
+    .hero .price-anchor strong {
+      color: #111;
+      font-size: 1.2rem;
+    }
+
+    .hero .price-anchor .strikethrough {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: #2563eb;
+      color: #fff;
+      padding: 16px 40px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .cta-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .cta-btn-outline {
+      background: transparent;
+      color: #2563eb;
+      border: 2px solid #2563eb;
+    }
+
+    .cta-btn-outline:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .try-free-btn {
+      display: inline-block;
+      background: transparent;
+      color: #2563eb;
+      padding: 16px 40px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: 2px solid #2563eb;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .try-free-btn:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .try-section-highlight {
+      animation: highlightPulse 2s ease-in-out;
+    }
+
+    @keyframes highlightPulse {
+      0% { box-shadow: inset 0 0 0 0 rgba(37, 99, 235, 0); }
+      30% { box-shadow: inset 0 0 0 4px rgba(37, 99, 235, 0.3); }
+      100% { box-shadow: inset 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+
+    #try-it .try-hint {
+      display: none;
+      margin-top: 24px;
+      padding: 16px 24px;
+      background: #2563eb;
+      color: #fff;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      animation: fadeInUp 0.4s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---- SECTIONS ---- */
+    section {
+      padding: 80px 24px;
+    }
+
+    section:nth-child(even) {
+      background: #fff;
+    }
+
+    .section-label {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #2563eb;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 20px;
+      color: #111;
+    }
+
+    /* ---- THE PROBLEM / FOUNDER STORY ---- */
+    .story {
+      background: #fff;
+    }
+
+    .story-content {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .story-content p {
+      font-size: 1.1rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .story-content .signature {
+      margin-top: 32px;
+      font-style: italic;
+      color: #555;
+      font-size: 1.05rem;
+    }
+
+    .pullquote {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2563eb;
+      border-left: 4px solid #2563eb;
+      padding-left: 24px;
+      margin: 36px 0;
+      line-height: 1.4;
+    }
+
+    /* ---- HOW IT WORKS ---- */
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    .step {
+      padding: 28px;
+      background: #f8f9fb;
+      border-radius: 12px;
+      border: 1px solid #eee;
+    }
+
+    .step-number {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      background: #2563eb;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 36px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+
+    .step h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    /* ---- BOOK LIST ---- */
+    .book-list-section {
+      background: #f8f9fb;
+    }
+
+    .book-list-intro {
+      font-size: 1.1rem;
+      color: #555;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .book-item {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      padding: 14px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+
+    .book-item:hover {
+      background: #f0f4ff;
+    }
+
+    .book-item:nth-child(odd) {
+      border-right: 1px solid #e5e7eb;
+    }
+
+    .book-day {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #2563eb;
+      min-width: 42px;
+      text-transform: uppercase;
+    }
+
+    .book-info {
+      flex: 1;
+    }
+
+    .book-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #111;
+    }
+
+    .book-author {
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    /* ---- BROWSE BY TOPIC ---- */
+    .topic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .topic-card {
+      display: block;
+      padding: 20px 24px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .topic-card:hover {
+      border-color: #2563eb;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+    }
+
+    .topic-card-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 4px;
+    }
+
+    .topic-card-count {
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    @media (max-width: 768px) {
+      .topic-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---- READING ADVOCACY ---- */
+    .reading-section {
+      background: #111;
+      color: #f0f0f0;
+    }
+
+    .reading-section .section-label {
+      color: #60a5fa;
+    }
+
+    .reading-section h2 {
+      color: #fff;
+    }
+
+    .reading-content {
+      max-width: 680px;
+    }
+
+    .reading-content p {
+      font-size: 1.05rem;
+      color: #ccc;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .reading-content strong {
+      color: #fff;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin: 40px 0;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 24px 16px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #60a5fa;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #999;
+    }
+
+    /* ---- PRICING ---- */
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin-top: 40px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .pricing-card {
+      padding: 36px 28px;
+      border-radius: 16px;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pricing-card.featured {
+      border-color: #2563eb;
+      position: relative;
+    }
+
+    .pricing-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2563eb;
+      color: #fff;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .pricing-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pricing-desc {
+      font-size: 0.9rem;
+      color: #777;
+      margin-bottom: 20px;
+    }
+
+    .pricing-price {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #111;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .pricing-per {
+      font-size: 0.9rem;
+      color: #999;
+      margin-bottom: 4px;
+    }
+
+    .pricing-compare {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-bottom: 24px;
+    }
+
+    .pricing-compare .strikethrough {
+      text-decoration: line-through;
+    }
+
+    .pricing-features {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+
+    .pricing-features li {
+      padding: 6px 0;
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    .pricing-features li::before {
+      content: '✓ ';
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    .pricing-card .cta-btn {
+      width: 100%;
+      text-align: center;
+    }
+
+    /* ---- FAQ ---- */
+    .faq-list {
+      max-width: 680px;
+      margin: 40px auto 0;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 24px 0;
+    }
+
+    .faq-item:first-child {
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .faq-q {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111;
+    }
+
+    .faq-a {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    /* ---- FINAL CTA ---- */
+    .final-cta {
+      text-align: center;
+      padding: 80px 24px;
+      background: #f8f9fb;
+      color: #1a1a1a;
+      border-top: 1px solid #eee;
+    }
+
+    .final-cta h2 {
+      color: #111;
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+    }
+
+    .final-cta p {
+      font-size: 1.15rem;
+      color: #555;
+      max-width: 500px;
+      margin: 0 auto 36px;
+    }
+
+    .final-cta .cta-btn {
+      background: #2563eb;
+      color: #fff;
+      font-size: 1.15rem;
+      padding: 18px 48px;
+    }
+
+    .final-cta .cta-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      font-size: 0.85rem;
+      color: #aaa;
+      background: #fafafa;
+      border-top: 1px solid #eee;
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 768px) {
+      nav .nav-links {
+        gap: 18px;
+      }
+
+      nav .nav-links a {
+        font-size: 0.82rem;
+      }
+
+      nav .nav-logo {
+        font-size: 0.85rem;
+      }
+
+      .hero {
+        padding: 92px 20px 60px;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero .subtitle {
+        font-size: 1.1rem;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .book-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .book-item:nth-child(odd) {
+        border-right: none;
+      }
+
+      .stat-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .pricing-cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .pullquote {
+        font-size: 1.25rem;
+      }
+
+      section {
+        padding: 60px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .cta-btn, .try-free-btn {
+        padding: 14px 32px;
+        font-size: 1rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Great Books Tutor</a>
+      <ul class="nav-links">
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1>Your Personal Tutor for<span>the Greatest Books of All Time*</span></h1>
+      <p style="font-size:0.85rem;color:#999;margin-bottom:24px;">*As determined by Goodreads rating</p>
+      <p class="subtitle">Faster and easier than reading. 2 books per week - that's almost 100 books in a year. Countless new lessons and wisdom.</p>
+      <div class="hero-buttons">
+        <a href="quiz.html" class="cta-btn">📖 Find Your Perfect Books</a>
+        <a href="#pricing" class="cta-btn cta-btn-outline">See Pricing</a>
+      </div>
+      <p style="font-size:0.9rem;color:#777;margin-top:16px;">Take a 2-minute quiz to get personalized book recommendations</p>
+    </div>
+  </section>
+
+  <!-- WHY THIS EXISTS -->
+  <section class="story">
+    <div class="container">
+      <div class="story-content">
+        <p class="section-label">From the Founder</p>
+        <h2>Why I Built This</h2>
+
+        <p>I love reading. Books have taught me more about life, habits, money, relationships, and purpose than anything else. I wish more people read&mdash;but I know most people won't sit down with a 300-page book.</p>
+
+        <p>So I built a new way to access the eternal wisdom inside books: <strong>a daily conversation with a book tutor</strong> who has deeply studied each book and discusses it with you, one-on-one.</p>
+
+        <p>Conversation is how humans have always learned best. Not passive listening&mdash;real discussion. Every session is interactive&mdash;your tutor explains the key ideas, then asks you questions to make sure you actually understand them. It's not a lecture, it's a real conversation.</p>
+
+        <p>I started with self-development books because they're the most generally applicable - useful no matter who you are or where you are in life. But I'm actively working to expand into other genres. I'd love to hear your suggestions and feedback on what you'd like to see next.</p>
+
+        <p class="signature">&mdash; Mili</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRY IT NOW -->
+  <section id="try-it" style="text-align:center;background:#f8f9fb;border-bottom:1px solid #eee;">
+    <div class="container">
+      <p class="section-label">Try It Now</p>
+      <h2>Talk to Your First Book Tutor</h2>
+      <p style="font-size:1.05rem;color:#555;max-width:520px;margin:0 auto 32px;">Experience a free 3-minute sample session on <strong>Man's Search for Meaning</strong> by Viktor Frankl. Click the microphone button in the bottom-right corner of your screen and start talking&mdash;this is exactly what every session feels like.</p>
+      <div class="try-hint" id="try-hint">
+        👉 Click the microphone button in the bottom-right corner to start your free conversation
+      </div>
+      <elevenlabs-convai agent-id="agent_8801kh54rqykf3han31mceg4x659"></elevenlabs-convai>
+      <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="container">
+      <p class="section-label">How It Works</p>
+      <h2>Simple. Daily. Transformative.</h2>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Pick Your Plan</h3>
+          <p>Choose Light, Monthly, or Yearly. Get your first book tutor link within 24 hours.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Get Your Book Links</h3>
+          <p>Twice a week, you receive a link to your personal voice tutor for that week's books. Just click and start talking.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Have a Conversation</h3>
+          <p>Have a voice conversation whenever and wherever suits you. Your book tutor teaches you the biggest ideas, then discusses them with you.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Keep Growing</h3>
+          <p>8 books a month, 96 a year. A growing library of the greatest personal development books ever written.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK LIST -->
+  <section class="book-list-section">
+    <div class="container">
+      <p class="section-label">The Curriculum</p>
+      <h2>Books That Can Change Your Life</h2>
+      <p class="book-list-intro">These are the top-rated Personal Development books on Goodreads, the world's largest book rating platform. We started here because these are the most universally useful books ever written&mdash;ideas about habits, relationships, money, mindfulness, and purpose. The stuff that makes you better at being human.</p>
+      <p class="book-list-intro" style="margin-top:12px;">More genres coming soon&mdash;philosophy, business, sci-fi, and more. <a href="#contact" style="color:#2563eb;">Contact me here</a> and tell me what genres you want to try!</p>
+
+      <div class="book-grid">
+        <a href="/books/mans-search-for-meaning/" class="book-item">
+          <span class="book-day">Book 1</span>
+          <div class="book-info">
+            <div class="book-title">Man's Search for Meaning</div>
+            <div class="book-author">Viktor E. Frankl</div>
+          </div>
+        </a>
+        <a href="/books/atomic-habits/" class="book-item">
+          <span class="book-day">Book 2</span>
+          <div class="book-info">
+            <div class="book-title">Atomic Habits</div>
+            <div class="book-author">James Clear</div>
+          </div>
+        </a>
+        <a href="/books/the-little-prince/" class="book-item">
+          <span class="book-day">Book 3</span>
+          <div class="book-info">
+            <div class="book-title">The Little Prince</div>
+            <div class="book-author">Antoine de Saint-Exupery</div>
+          </div>
+        </a>
+        <a href="/books/when-things-fall-apart/" class="book-item">
+          <span class="book-day">Book 4</span>
+          <div class="book-info">
+            <div class="book-title">When Things Fall Apart</div>
+            <div class="book-author">Pema Chodron</div>
+          </div>
+        </a>
+        <a href="/books/the-success-principles/" class="book-item">
+          <span class="book-day">Book 5</span>
+          <div class="book-info">
+            <div class="book-title">The Success Principles</div>
+            <div class="book-author">Jack Canfield</div>
+          </div>
+        </a>
+        <a href="/books/tao-te-ching/" class="book-item">
+          <span class="book-day">Book 6</span>
+          <div class="book-info">
+            <div class="book-title">Tao Te Ching</div>
+            <div class="book-author">Lao Tzu</div>
+          </div>
+        </a>
+        <a href="/books/the-richest-man-in-babylon/" class="book-item">
+          <span class="book-day">Book 7</span>
+          <div class="book-info">
+            <div class="book-title">The Richest Man in Babylon</div>
+            <div class="book-author">George S. Clason</div>
+          </div>
+        </a>
+        <a href="/books/the-total-money-makeover/" class="book-item">
+          <span class="book-day">Book 8</span>
+          <div class="book-info">
+            <div class="book-title">The Total Money Makeover</div>
+            <div class="book-author">Dave Ramsey</div>
+          </div>
+        </a>
+        <a href="/books/daring-greatly/" class="book-item">
+          <span class="book-day">Book 9</span>
+          <div class="book-info">
+            <div class="book-title">Daring Greatly</div>
+            <div class="book-author">Brene Brown</div>
+          </div>
+        </a>
+        <a href="/books/the-5-love-languages/" class="book-item">
+          <span class="book-day">Book 10</span>
+          <div class="book-info">
+            <div class="book-title">The 5 Love Languages</div>
+            <div class="book-author">Gary Chapman</div>
+          </div>
+        </a>
+        <a href="/books/the-magic-of-thinking-big/" class="book-item">
+          <span class="book-day">Book 11</span>
+          <div class="book-info">
+            <div class="book-title">The Magic of Thinking Big</div>
+            <div class="book-author">David J. Schwartz</div>
+          </div>
+        </a>
+        <a href="/books/boundaries/" class="book-item">
+          <span class="book-day">Book 12</span>
+          <div class="book-info">
+            <div class="book-title">Boundaries</div>
+            <div class="book-author">Henry Cloud &amp; John Townsend</div>
+          </div>
+        </a>
+        <a href="/books/deep-work/" class="book-item">
+          <span class="book-day">Book 13</span>
+          <div class="book-info">
+            <div class="book-title">Deep Work</div>
+            <div class="book-author">Cal Newport</div>
+          </div>
+        </a>
+        <a href="/books/how-to-win-friends-and-influence-people/" class="book-item">
+          <span class="book-day">Book 14</span>
+          <div class="book-info">
+            <div class="book-title">How to Win Friends and Influence People</div>
+            <div class="book-author">Dale Carnegie</div>
+          </div>
+        </a>
+        <a href="/books/think-and-grow-rich/" class="book-item">
+          <span class="book-day">Book 15</span>
+          <div class="book-info">
+            <div class="book-title">Think and Grow Rich</div>
+            <div class="book-author">Napoleon Hill</div>
+          </div>
+        </a>
+        <a href="/books/thinking-fast-and-slow/" class="book-item">
+          <span class="book-day">Book 16</span>
+          <div class="book-info">
+            <div class="book-title">Thinking, Fast and Slow</div>
+            <div class="book-author">Daniel Kahneman</div>
+          </div>
+        </a>
+        <a href="/books/outliers/" class="book-item">
+          <span class="book-day">Book 17</span>
+          <div class="book-info">
+            <div class="book-title">Outliers</div>
+            <div class="book-author">Malcolm Gladwell</div>
+          </div>
+        </a>
+        <a href="/books/the-art-of-happiness/" class="book-item">
+          <span class="book-day">Book 18</span>
+          <div class="book-info">
+            <div class="book-title">The Art of Happiness</div>
+            <div class="book-author">Dalai Lama XIV</div>
+          </div>
+        </a>
+        <a href="/books/the-willpower-instinct/" class="book-item">
+          <span class="book-day">Book 19</span>
+          <div class="book-info">
+            <div class="book-title">The Willpower Instinct</div>
+            <div class="book-author">Kelly McGonigal</div>
+          </div>
+        </a>
+        <a href="/books/the-four-agreements/" class="book-item">
+          <span class="book-day">Book 20</span>
+          <div class="book-info">
+            <div class="book-title">The Four Agreements</div>
+            <div class="book-author">Don Miguel Ruiz</div>
+          </div>
+        </a>
+        <a href="/books/awaken-the-giant-within/" class="book-item">
+          <span class="book-day">Book 21</span>
+          <div class="book-info">
+            <div class="book-title">Awaken the Giant Within</div>
+            <div class="book-author">Tony Robbins</div>
+          </div>
+        </a>
+        <a href="/books/the-power-of-positive-thinking/" class="book-item">
+          <span class="book-day">Book 22</span>
+          <div class="book-info">
+            <div class="book-title">The Power of Positive Thinking</div>
+            <div class="book-author">Norman Vincent Peale</div>
+          </div>
+        </a>
+        <a href="/books/the-power-of-now/" class="book-item">
+          <span class="book-day">Book 23</span>
+          <div class="book-info">
+            <div class="book-title">The Power of Now</div>
+            <div class="book-author">Eckhart Tolle</div>
+          </div>
+        </a>
+        <a href="/books/the-7-habits-of-highly-effective-people/" class="book-item">
+          <span class="book-day">Book 24</span>
+          <div class="book-info">
+            <div class="book-title">The 7 Habits of Highly Effective People</div>
+            <div class="book-author">Stephen R. Covey</div>
+          </div>
+        </a>
+        <a href="/books/creative-visualization/" class="book-item">
+          <span class="book-day">Book 25</span>
+          <div class="book-info">
+            <div class="book-title">Creative Visualization</div>
+            <div class="book-author">Shakti Gawain</div>
+          </div>
+        </a>
+        <a href="/books/wherever-you-go-there-you-are/" class="book-item">
+          <span class="book-day">Book 26</span>
+          <div class="book-info">
+            <div class="book-title">Wherever You Go, There You Are</div>
+            <div class="book-author">Jon Kabat-Zinn</div>
+          </div>
+        </a>
+        <a href="/books/the-power-of-habit/" class="book-item">
+          <span class="book-day">Book 27</span>
+          <div class="book-info">
+            <div class="book-title">The Power of Habit</div>
+            <div class="book-author">Charles Duhigg</div>
+          </div>
+        </a>
+        <a href="/books/grit/" class="book-item">
+          <span class="book-day">Book 28</span>
+          <div class="book-info">
+            <div class="book-title">Grit</div>
+            <div class="book-author">Angela Duckworth</div>
+          </div>
+        </a>
+        <a href="/books/rich-dad-poor-dad/" class="book-item">
+          <span class="book-day">Book 29</span>
+          <div class="book-info">
+            <div class="book-title">Rich Dad, Poor Dad</div>
+            <div class="book-author">Robert T. Kiyosaki</div>
+          </div>
+        </a>
+        <a href="/books/quiet/" class="book-item">
+          <span class="book-day">Book 30</span>
+          <div class="book-info">
+            <div class="book-title">Quiet</div>
+            <div class="book-author">Susan Cain</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BROWSE BY TOPIC -->
+  <section style="background:#fff;">
+    <div class="container">
+      <p class="section-label">Browse by Topic</p>
+      <h2>Find Books by Category</h2>
+      <p style="font-size:1.05rem;color:#555;margin-bottom:8px;">Explore our curated collections of the best books on topics that matter most.</p>
+
+      <div class="topic-grid">
+        <a href="/topics/best-books-about-habits/" class="topic-card">
+          <div class="topic-card-name">Habits &amp; Productivity</div>
+          <div class="topic-card-count">6 books</div>
+        </a>
+        <a href="/topics/best-books-about-money/" class="topic-card">
+          <div class="topic-card-name">Money &amp; Wealth</div>
+          <div class="topic-card-count">5 books</div>
+        </a>
+        <a href="/topics/best-books-about-mindfulness/" class="topic-card">
+          <div class="topic-card-name">Mindfulness &amp; Presence</div>
+          <div class="topic-card-count">6 books</div>
+        </a>
+        <a href="/topics/best-books-about-relationships/" class="topic-card">
+          <div class="topic-card-name">Relationships &amp; Communication</div>
+          <div class="topic-card-count">5 books</div>
+        </a>
+        <a href="/topics/best-books-about-success/" class="topic-card">
+          <div class="topic-card-name">Success &amp; Mindset</div>
+          <div class="topic-card-count">7 books</div>
+        </a>
+        <a href="/topics/best-books-about-psychology/" class="topic-card">
+          <div class="topic-card-name">Psychology &amp; Self-Understanding</div>
+          <div class="topic-card-count">6 books</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="container">
+      <p class="section-label" style="text-align:center;">Pricing</p>
+      <p style="text-align:center;font-size:1.15rem;font-style:italic;color:#555;max-width:560px;margin:0 auto 8px;">&ldquo;A mind needs books as a sword needs a whetstone, if it is to keep its edge.&rdquo;</p>
+      <p style="text-align:center;font-size:0.9rem;color:#999;margin-bottom:0;">&mdash; George R.R. Martin</p>
+
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <div class="pricing-name">Book Tutor Light</div>
+          <div class="pricing-desc">1 book every two weeks</div>
+          <div class="pricing-price">$4.99</div>
+          <div class="pricing-per">first month, then $14.99/mo</div>
+          <div class="pricing-compare"><span class="strikethrough">$100+</span> for a session with a private tutor</div>
+          <ul class="pricing-features">
+            <li>2 books per month</li>
+            <li>1 new book every two weeks</li>
+            <li>30-minute sessions</li>
+            <li>One expert tutor per book</li>
+            <li>Cancel anytime</li>
+          </ul>
+          <a href="https://buy.stripe.com/6oUbJ08nQ1i2bH56vi2880g" class="cta-btn cta-btn-outline">Get Started</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="pricing-name">Monthly</div>
+          <div class="pricing-desc">8 books every month, 2 per week</div>
+          <div class="pricing-price">$49</div>
+          <div class="pricing-per">per month &mdash; just $1.63/day</div>
+          <div class="pricing-compare"><span class="strikethrough">$800+</span> for 8 sessions with a private tutor</div>
+          <ul class="pricing-features">
+            <li>8 books per month</li>
+            <li>2 new books every week</li>
+            <li>30-minute sessions</li>
+            <li>One expert tutor per book</li>
+            <li>Cancel anytime</li>
+          </ul>
+          <a href="https://buy.stripe.com/aFa00icE61i2eTh06U2880f" class="cta-btn">Subscribe Monthly</a>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-name">Book Tutor Pro</div>
+          <div class="pricing-desc">20 books every month &mdash; 240 a year</div>
+          <div class="pricing-price">$99</div>
+          <div class="pricing-per">per month &mdash; just $3.30/day</div>
+          <div class="pricing-compare"><span class="strikethrough">$2,000+</span> for 20 sessions with a private tutor</div>
+          <ul class="pricing-features">
+            <li>20 books per month (240/year)</li>
+            <li>5 new books every week</li>
+            <li>30-minute sessions</li>
+            <li>One expert tutor per book</li>
+            <li>Cancel anytime</li>
+          </ul>
+          <a href="https://buy.stripe.com/6oU28q47A0dY8uTaLy2880i" class="cta-btn cta-btn-outline">Subscribe Pro</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="background:#fff;">
+    <div class="container">
+      <p class="section-label" style="text-align:center;">FAQ</p>
+      <h2 style="text-align:center;">Common Questions</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">TL;DR?</div>
+          <div class="faq-a">2 new books every week, delivered to your inbox. Each session is a 10&ndash;30 minute voice conversation&mdash;like talking to a tutor who read the book for you. Your AI tutor explains the core ideas, quizzes you, and discusses insights back and forth. Plans start at just $4.99 for your first month. Zero reading required.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What is a book tutor?</div>
+          <div class="faq-a">Your book tutor is an AI-powered voice agent that you talk to out loud. It's an expert on that day's book, and its only mission is to help you understand and learn the key concepts. It explains ideas, asks you questions, responds to yours, and adapts to your level&mdash;like a private tutor who has read the book cover to cover.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Is this a real person or AI?</div>
+          <div class="faq-a">Your book tutor is powered by AI&mdash;specifically, a voice agent built on the latest conversational AI technology. It sounds natural, responds in real time, and adapts to you. Think of it as the world's leading expert in that specific book you're talking about, and their sole purpose is to tutor you in its contents, available any time of day.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Do I need to have read the books?</div>
+          <div class="faq-a">No&mdash;that's the whole point. Your book tutor walks you through everything. You'll understand the key ideas as if you'd read it yourself.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What do I need to get started?</div>
+          <div class="faq-a">A device with a microphone and an internet connection. Sessions happen in your browser&mdash;no app required.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How long is each session?</div>
+          <div class="faq-a">However long fits your schedule&mdash;the limit is 30 minutes per book. I find 20 minutes is enough to get the basics, but you can go deeper if you have the time.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Do I have to use all 30 minutes in one sitting?</div>
+          <div class="faq-a">Nope&mdash;you can split your time however you like. Do 10 minutes on your morning commute and 15 minutes before bed, or knock it all out in one session. Whatever's most convenient for you.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">What if I miss a day?</div>
+          <div class="faq-a">No worries&mdash;each session link stays active for 60 days. Go at your own pace and use them whenever works best for you.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">How do I interact with the tutor?</div>
+          <div class="faq-a">Just talk to it like you would a real person. You can interrupt, push the conversation forward, or slow it down. Tell it things like "keep your answers shorter," "explain that again," or "please wait while I think about this." Experiment and see what works best for you - the tutor adapts to your style.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Why not just use ChatGPT?</div>
+          <div class="faq-a">You could&mdash;but you probably won't. The magic here is the structure: a curated curriculum of the best books, delivered on a schedule so you actually follow through. Each tutor is purpose-built for one book with a deep knowledge base, not a generic chatbot guessing from memory. And it's voice-first&mdash;you talk and listen like a real conversation, not type and read. Think of it like the difference between having a gym membership and having a personal trainer who shows up at your door.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q">Can I cancel anytime?</div>
+          <div class="faq-a">Yes. Cancel anytime from your account&mdash;no questions asked. You'll keep access to any sessions you've already received.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section style="text-align:center;padding:48px 24px;background:#f8f9fb;">
+    <div class="container">
+      <p class="pullquote" style="max-width:640px;margin:0 auto;text-align:left;">"There is no difference between the person who cannot read and the person who will not read."<br><span style="font-size:1rem;font-weight:400;color:#555;">&mdash; Jim Rohn</span></p>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <h2>Your First Book Is Waiting</h2>
+    <p>Two new books every week. Starting at just $4.99 for your first month&mdash;the ideas that can change your life are one conversation away.</p>
+    <a href="#pricing" class="cta-btn">Get Started</a>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="text-align:center;padding:60px 24px;background:#fff;border-top:1px solid #eee;">
+    <p class="section-label">Contact</p>
+    <h2>Get in Touch</h2>
+    <p style="font-size:1.05rem;color:#555;margin-top:16px;">Questions, feedback, or genre requests? Reach out anytime.</p>
+    <p style="font-size:1.1rem;margin-top:12px;"><a href="mailto:maximilian.rehn@gmail.com" style="color:#2563eb;text-decoration:none;font-weight:600;">maximilian.rehn@gmail.com</a></p>
+    <p style="margin-top:12px;"><a href="https://x.com/wizard_mili" target="_blank" rel="noopener" style="color:#111;text-decoration:none;display:inline-block;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></p>
+  </section>
+
+  <section style="text-align:center;padding:48px 24px;background:#f8f9fb;">
+    <div class="container">
+      <p class="pullquote" style="max-width:640px;margin:0 auto;text-align:left;">"Work harder on yourself than you do on your job. If you work hard on your job, you can make a living. If you work hard on yourself, you can make a fortune."<br><span style="font-size:1rem;font-weight:400;color:#555;">&mdash; Jim Rohn</span></p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Great Books Tutor. All rights reserved.</p>
+    <p style="margin-top:8px;"><a href="#contact" style="color:#777;text-decoration:none;">Contact</a> &middot; <a href="https://x.com/wizard_mili" target="_blank" rel="noopener" style="color:#777;text-decoration:none;">X</a></p>
+  </footer>
+
+<script>
+function scrollToTryIt() {
+  var section = document.getElementById('try-it');
+  if (!section) return;
+  section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // Highlight the section
+  section.classList.add('try-section-highlight');
+  setTimeout(function() { section.classList.remove('try-section-highlight'); }, 2500);
+  // Show the hint pointing to the widget
+  var hint = document.getElementById('try-hint');
+  if (hint) hint.style.display = 'block';
+  // Try to auto-click the ElevenLabs widget button
+  setTimeout(function() {
+    var widget = document.querySelector('elevenlabs-convai');
+    if (widget && widget.shadowRoot) {
+      var btn = widget.shadowRoot.querySelector('button');
+      if (btn) btn.click();
+    }
+  }, 800);
+}
+</script>
+</body>
+</html>

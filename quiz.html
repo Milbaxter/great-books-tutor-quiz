@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Your Perfect Books — Great Books Tutor</title>
+  <meta name="description" content="Take a quick quiz to discover which great books match your interests and get personalized AI tutor recommendations.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      color: #1a1a1a;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .quiz-container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 680px;
+      width: 100%;
+      padding: 48px;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    .quiz-step {
+      display: none;
+    }
+
+    .quiz-step.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .step-subtitle {
+      font-size: 1.05rem;
+      color: #666;
+      margin-bottom: 32px;
+    }
+
+    .question {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 24px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .option {
+      background: #f8f9fb;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .option:hover {
+      border-color: #667eea;
+      background: #f0f4ff;
+    }
+
+    .option.selected {
+      border-color: #667eea;
+      background: #f0f4ff;
+      font-weight: 600;
+    }
+
+    .option input[type="checkbox"],
+    .option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #667eea;
+    }
+
+    .option-label {
+      flex: 1;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .topic-option {
+      background: #f8f9fb;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .topic-option:hover {
+      border-color: #667eea;
+      background: #f0f4ff;
+    }
+
+    .topic-option.selected {
+      border-color: #667eea;
+      background: #667eea;
+      color: #fff;
+    }
+
+    .email-input {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .email-input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .email-hint {
+      font-size: 0.9rem;
+      color: #777;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #667eea;
+      border: 2px solid #667eea;
+      margin-top: 12px;
+    }
+
+    .btn-secondary:hover {
+      background: #667eea;
+      color: #fff;
+    }
+
+    .results-container {
+      text-align: center;
+    }
+
+    .results-header {
+      margin-bottom: 32px;
+    }
+
+    .results-subtitle {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 32px;
+    }
+
+    .book-recommendations {
+      text-align: left;
+      margin-bottom: 32px;
+    }
+
+    .book-card {
+      background: #f8f9fb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+
+    .book-card:hover {
+      border-color: #667eea;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+
+    .book-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 4px;
+    }
+
+    .book-author {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .book-match {
+      font-size: 0.85rem;
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .plan-recommendation {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .plan-recommendation h3 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+
+    .plan-recommendation p {
+      font-size: 1rem;
+      opacity: 0.95;
+    }
+
+    .skip-link {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .skip-link a {
+      color: #999;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .skip-link a:hover {
+      color: #667eea;
+    }
+
+    @media (max-width: 640px) {
+      .quiz-container {
+        padding: 32px 24px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .topic-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+
+    <!-- Step 0: Welcome -->
+    <div class="quiz-step active" data-step="0">
+      <h1>Find Your Perfect Books</h1>
+      <p class="step-subtitle">Answer 5 quick questions to get personalized book tutor recommendations</p>
+      <button class="btn" onclick="nextStep()">Start Quiz</button>
+      <div class="skip-link">
+        <a href="index.html">Skip and browse all books</a>
+      </div>
+    </div>
+
+    <!-- Step 1: Motivation -->
+    <div class="quiz-step" data-step="1">
+      <p class="question">What brings you here today?</p>
+      <div class="options">
+        <label class="option">
+          <input type="radio" name="motivation" value="understand_classics" onchange="selectOption(this)">
+          <span class="option-label">I want to understand classic books I haven't read</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="motivation" value="improve_life" onchange="selectOption(this)">
+          <span class="option-label">I'm looking to improve specific areas of my life</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="motivation" value="no_time" onchange="selectOption(this)">
+          <span class="option-label">I love reading but don't have time anymore</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="motivation" value="well_rounded" onchange="selectOption(this)">
+          <span class="option-label">I want to become more well-rounded and cultured</span>
+        </label>
+      </div>
+      <button class="btn" onclick="nextStep()" id="step1Btn" disabled>Continue</button>
+    </div>
+
+    <!-- Step 2: Topics -->
+    <div class="quiz-step" data-step="2">
+      <p class="question">Which topics interest you most?</p>
+      <p style="font-size:0.9rem;color:#777;margin-bottom:20px;">Select up to 3</p>
+      <div class="topic-grid">
+        <div class="topic-option" onclick="toggleTopic(this, 'philosophy')">
+          📚 Philosophy & Meaning
+        </div>
+        <div class="topic-option" onclick="toggleTopic(this, 'self_improvement')">
+          🎯 Self-Improvement
+        </div>
+        <div class="topic-option" onclick="toggleTopic(this, 'business')">
+          💼 Business & Success
+        </div>
+        <div class="topic-option" onclick="toggleTopic(this, 'psychology')">
+          🧠 Psychology
+        </div>
+        <div class="topic-option" onclick="toggleTopic(this, 'relationships')">
+          💬 Relationships
+        </div>
+        <div class="topic-option" onclick="toggleTopic(this, 'money')">
+          💰 Money & Finance
+        </div>
+        <div class="topic-option" onclick="toggleTopic(this, 'mindfulness')">
+          🧘 Mindfulness
+        </div>
+        <div class="topic-option" onclick="toggleTopic(this, 'habits')">
+          ⚡ Habits & Productivity
+        </div>
+      </div>
+      <button class="btn" onclick="nextStep()" id="step2Btn" disabled>Continue</button>
+    </div>
+
+    <!-- Step 3: Time Commitment -->
+    <div class="quiz-step" data-step="3">
+      <p class="question">How much time can you realistically dedicate?</p>
+      <div class="options">
+        <label class="option">
+          <input type="radio" name="time" value="10-15" onchange="selectOption(this)">
+          <span class="option-label">10-15 minutes per day</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="time" value="20-30" onchange="selectOption(this)">
+          <span class="option-label">20-30 minutes per day</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="time" value="60+" onchange="selectOption(this)">
+          <span class="option-label">1 hour or more per day</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="time" value="varies" onchange="selectOption(this)">
+          <span class="option-label">Varies week to week</span>
+        </label>
+      </div>
+      <button class="btn" onclick="nextStep()" id="step3Btn" disabled>Continue</button>
+    </div>
+
+    <!-- Step 4: Reading Background -->
+    <div class="quiz-step" data-step="4">
+      <p class="question">What's your reading background?</p>
+      <div class="options">
+        <label class="option">
+          <input type="radio" name="reading" value="regular" onchange="selectOption(this)">
+          <span class="option-label">I read regularly (10+ books/year)</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="reading" value="occasional" onchange="selectOption(this)">
+          <span class="option-label">I read occasionally (3-10 books/year)</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="reading" value="rarely" onchange="selectOption(this)">
+          <span class="option-label">I rarely read books (< 3 books/year)</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="reading" value="want_to" onchange="selectOption(this)">
+          <span class="option-label">I want to read but never do</span>
+        </label>
+      </div>
+      <button class="btn" onclick="nextStep()" id="step4Btn" disabled>Continue</button>
+    </div>
+
+    <!-- Step 5: Email -->
+    <div class="quiz-step" data-step="5">
+      <p class="question">Almost done! What's your email?</p>
+      <p class="email-hint">We'll send your personalized book recommendations (and nothing else)</p>
+      <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" onkeyup="validateEmail()">
+      <button class="btn" onclick="submitQuiz()" id="step5Btn" disabled>See My Recommendations</button>
+    </div>
+
+    <!-- Results -->
+    <div class="quiz-step" data-step="6">
+      <div class="results-container">
+        <div class="results-header">
+          <h1>Your Personalized Book Recommendations</h1>
+          <p class="results-subtitle" id="resultsSubtitle"></p>
+        </div>
+
+        <div class="plan-recommendation">
+          <h3 id="planName"></h3>
+          <p id="planDescription"></p>
+        </div>
+
+        <div class="book-recommendations" id="bookRecommendations"></div>
+
+        <button class="btn" onclick="window.location.href='index.html#pricing'">Get Started</button>
+        <button class="btn btn-secondary" onclick="window.location.href='index.html'">Browse All Books</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 0;
+    const quizData = {
+      motivation: null,
+      topics: [],
+      time: null,
+      reading: null,
+      email: null
+    };
+
+    const bookDatabase = {
+      philosophy: [
+        { title: "Man's Search for Meaning", author: "Viktor E. Frankl", match: "Explores profound questions about purpose and meaning" },
+        { title: "Tao Te Ching", author: "Lao Tzu", match: "Ancient wisdom on living in harmony with the universe" },
+        { title: "The Art of Happiness", author: "Dalai Lama XIV", match: "Buddhist philosophy for modern life" },
+        { title: "The Power of Now", author: "Eckhart Tolle", match: "Present-moment awareness and consciousness" }
+      ],
+      self_improvement: [
+        { title: "Atomic Habits", author: "James Clear", match: "Build better habits and break bad ones" },
+        { title: "The Magic of Thinking Big", author: "David J. Schwartz", match: "Expand your thinking to achieve more" },
+        { title: "Awaken the Giant Within", author: "Tony Robbins", match: "Take control of your destiny" },
+        { title: "The 7 Habits of Highly Effective People", author: "Stephen R. Covey", match: "Timeless principles for personal effectiveness" }
+      ],
+      business: [
+        { title: "Think and Grow Rich", author: "Napoleon Hill", match: "Classic success principles from history's achievers" },
+        { title: "The Success Principles", author: "Jack Canfield", match: "Practical strategies for achieving your goals" },
+        { title: "Outliers", author: "Malcolm Gladwell", match: "What makes high-achievers different" },
+        { title: "Grit", author: "Angela Duckworth", match: "Why passion and perseverance matter most" }
+      ],
+      psychology: [
+        { title: "Thinking, Fast and Slow", author: "Daniel Kahneman", match: "How your mind really works" },
+        { title: "The Willpower Instinct", author: "Kelly McGonigal", match: "Science of self-control" },
+        { title: "Daring Greatly", author: "Brené Brown", match: "The power of vulnerability" },
+        { title: "Quiet", author: "Susan Cain", match: "Understanding introverts in an extrovert world" }
+      ],
+      relationships: [
+        { title: "How to Win Friends and Influence People", author: "Dale Carnegie", match: "Timeless people skills" },
+        { title: "The 5 Love Languages", author: "Gary Chapman", match: "How to better connect with your partner" },
+        { title: "Boundaries", author: "Henry Cloud & John Townsend", match: "When to say yes, how to say no" }
+      ],
+      money: [
+        { title: "Rich Dad, Poor Dad", author: "Robert T. Kiyosaki", match: "Financial literacy and building wealth" },
+        { title: "The Richest Man in Babylon", author: "George S. Clason", match: "Timeless financial wisdom through parables" },
+        { title: "The Total Money Makeover", author: "Dave Ramsey", match: "Practical plan to get out of debt" }
+      ],
+      mindfulness: [
+        { title: "When Things Fall Apart", author: "Pema Chödrön", match: "Finding peace in difficult times" },
+        { title: "Wherever You Go, There You Are", author: "Jon Kabat-Zinn", match: "Mindfulness meditation in everyday life" },
+        { title: "The Four Agreements", author: "Don Miguel Ruiz", match: "Ancient Toltec wisdom for personal freedom" }
+      ],
+      habits: [
+        { title: "Atomic Habits", author: "James Clear", match: "Tiny changes, remarkable results" },
+        { title: "The Power of Habit", author: "Charles Duhigg", match: "Why we do what we do" },
+        { title: "Deep Work", author: "Cal Newport", match: "Focus deeply in a distracted world" }
+      ]
+    };
+
+    function nextStep() {
+      const steps = document.querySelectorAll('.quiz-step');
+      steps[currentStep].classList.remove('active');
+      currentStep++;
+      steps[currentStep].classList.add('active');
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const progress = (currentStep / 6) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+    }
+
+    function selectOption(input) {
+      const step = input.closest('.quiz-step').dataset.step;
+      const name = input.name;
+      
+      // Update visual selection
+      const options = input.closest('.options').querySelectorAll('.option');
+      options.forEach(opt => opt.classList.remove('selected'));
+      input.closest('.option').classList.add('selected');
+      
+      // Store data
+      quizData[name] = input.value;
+      
+      // Enable button
+      document.getElementById('step' + step + 'Btn').disabled = false;
+    }
+
+    function toggleTopic(element, topic) {
+      if (element.classList.contains('selected')) {
+        element.classList.remove('selected');
+        quizData.topics = quizData.topics.filter(t => t !== topic);
+      } else {
+        if (quizData.topics.length < 3) {
+          element.classList.add('selected');
+          quizData.topics.push(topic);
+        }
+      }
+      
+      document.getElementById('step2Btn').disabled = quizData.topics.length === 0;
+    }
+
+    function validateEmail() {
+      const email = document.getElementById('emailInput').value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isValid = emailRegex.test(email);
+      document.getElementById('step5Btn').disabled = !isValid;
+      if (isValid) {
+        quizData.email = email;
+      }
+    }
+
+    function submitQuiz() {
+      // In production, send this data to your backend/email service
+      console.log('Quiz submitted:', quizData);
+      
+      // Show results
+      nextStep();
+      displayResults();
+    }
+
+    function displayResults() {
+      // Generate subtitle based on topics
+      const topicNames = {
+        philosophy: 'Philosophy & Meaning',
+        self_improvement: 'Self-Improvement',
+        business: 'Business & Success',
+        psychology: 'Psychology',
+        relationships: 'Relationships',
+        money: 'Money & Finance',
+        mindfulness: 'Mindfulness',
+        habits: 'Habits & Productivity'
+      };
+      
+      const selectedTopicNames = quizData.topics.map(t => topicNames[t]).join(', ');
+      document.getElementById('resultsSubtitle').textContent = 
+        `Based on your interests in ${selectedTopicNames}, here are your perfect books:`;
+      
+      // Recommend plan based on time commitment
+      let planName, planDescription;
+      if (quizData.time === '10-15') {
+        planName = 'Book Tutor Light';
+        planDescription = 'Perfect for your schedule: 2 books per month, just $14.99/mo (first month $4.99)';
+      } else if (quizData.time === '60+') {
+        planName = 'Book Tutor Pro';
+        planDescription = 'For serious learners: 20 books per month, $99/mo';
+      } else {
+        planName = 'Monthly Plan (Recommended)';
+        planDescription = 'Best value: 8 books per month, just $49/mo';
+      }
+      
+      document.getElementById('planName').textContent = planName;
+      document.getElementById('planDescription').textContent = planDescription;
+      
+      // Show recommended books
+      const recommendations = [];
+      quizData.topics.forEach(topic => {
+        const topicBooks = bookDatabase[topic] || [];
+        recommendations.push(...topicBooks);
+      });
+      
+      // Remove duplicates and limit to 8
+      const uniqueBooks = [...new Map(recommendations.map(b => [b.title, b])).values()].slice(0, 8);
+      
+      const bookContainer = document.getElementById('bookRecommendations');
+      bookContainer.innerHTML = uniqueBooks.map(book => `
+        <div class="book-card">
+          <div class="book-title">${book.title}</div>
+          <div class="book-author">${book.author}</div>
+          <div class="book-match">✨ ${book.match}</div>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>
