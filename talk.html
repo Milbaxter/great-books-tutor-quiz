@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Session — Great Books Tutor</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+  <meta name="robots" content="noindex, nofollow">
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-glow: rgba(37, 99, 235, 0.25);
+      --text: #1a1a1a;
+      --text-muted: #777;
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- HEADER ---- */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111;
+      text-decoration: none;
+    }
+
+    .time-badge {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #16a34a;
+      background: #f0fdf4;
+      padding: 6px 16px;
+      border-radius: 100px;
+      transition: all 0.3s;
+    }
+
+    .time-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: #16a34a;
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    .time-badge.warning {
+      color: #92400e;
+      background: #fef3c7;
+    }
+
+    .time-badge.warning .dot {
+      background: #f59e0b;
+    }
+
+    .time-badge.critical {
+      color: #991b1b;
+      background: #fef2f2;
+    }
+
+    .time-badge.critical .dot {
+      background: #ef4444;
+      animation: pulse-dot 0.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ---- MAIN ---- */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .state.active {
+      display: flex;
+    }
+
+    /* ---- SPINNER ---- */
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ---- VOICE ORB ---- */
+    .voice-orb-container {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .voice-orb {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, #60a5fa 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px var(--primary-glow);
+      position: relative;
+      z-index: 2;
+    }
+
+    .voice-orb svg {
+      width: 40px;
+      height: 40px;
+      color: #fff;
+    }
+
+    .voice-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      opacity: 0;
+      z-index: 1;
+    }
+
+    /* Idle */
+    .voice-orb-container.idle .voice-ring:nth-child(1) {
+      animation: breathe 4s ease-in-out infinite;
+    }
+    .voice-orb-container.idle .voice-ring:nth-child(2) {
+      animation: breathe 4s ease-in-out infinite 1.3s;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.7); opacity: 0; }
+      50% { transform: scale(0.85); opacity: 0.12; }
+    }
+
+    /* Active / listening */
+    .voice-orb-container.active .voice-ring:nth-child(1) {
+      animation: sonar 2s ease-out infinite;
+    }
+    .voice-orb-container.active .voice-ring:nth-child(2) {
+      animation: sonar 2s ease-out infinite 0.6s;
+    }
+    .voice-orb-container.active .voice-ring:nth-child(3) {
+      animation: sonar 2s ease-out infinite 1.2s;
+    }
+    .voice-orb-container.active .voice-orb {
+      animation: orb-pulse 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes sonar {
+      0% { transform: scale(0.7); opacity: 0.35; }
+      100% { transform: scale(1.3); opacity: 0; }
+    }
+
+    @keyframes orb-pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.06); }
+    }
+
+    /* Speaking */
+    .voice-orb-container.speaking .voice-ring:nth-child(1) {
+      animation: speak-ring 1.2s ease-in-out infinite;
+    }
+    .voice-orb-container.speaking .voice-ring:nth-child(2) {
+      animation: speak-ring 1.2s ease-in-out infinite 0.4s;
+    }
+    .voice-orb-container.speaking .voice-ring:nth-child(3) {
+      animation: speak-ring 1.2s ease-in-out infinite 0.8s;
+    }
+    .voice-orb-container.speaking .voice-orb {
+      animation: orb-speak 0.8s ease-in-out infinite alternate;
+      box-shadow: 0 8px 48px var(--primary-glow);
+    }
+
+    @keyframes speak-ring {
+      0%, 100% { transform: scale(0.85); opacity: 0.18; }
+      50% { transform: scale(1.05); opacity: 0.06; }
+    }
+
+    @keyframes orb-speak {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
+    /* ---- SESSION INFO ---- */
+    .session-info {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    /* ---- TRANSCRIPT ---- */
+    .transcript {
+      width: 100%;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      background: var(--surface);
+      text-align: left;
+    }
+
+    .transcript:empty {
+      display: none;
+    }
+
+    .transcript-msg {
+      padding: 8px 0;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .transcript-msg:last-child {
+      border-bottom: none;
+    }
+
+    .transcript-label {
+      font-weight: 700;
+      margin-right: 8px;
+      font-size: 0.8rem;
+    }
+
+    .transcript-agent .transcript-label {
+      color: var(--primary);
+    }
+
+    .transcript-user .transcript-label {
+      color: #555;
+    }
+
+    /* ---- ERROR / ENDED / DEPLETED ---- */
+    .error-icon, .ended-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .error-title, .ended-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 8px;
+    }
+
+    .error-msg, .ended-msg {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      max-width: 440px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--primary);
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      margin-bottom: 12px;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 8px 16px;
+    }
+
+    .btn-secondary:hover {
+      color: var(--primary);
+    }
+
+    .btn-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* ---- FOOTER ---- */
+    .footer {
+      text-align: center;
+      padding: 16px 24px;
+      font-size: 0.85rem;
+      color: #aaa;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer a {
+      color: #777;
+      text-decoration: none;
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 600px) {
+      .voice-orb-container {
+        width: 140px;
+        height: 140px;
+      }
+      .voice-orb {
+        width: 96px;
+        height: 96px;
+      }
+      .voice-orb svg {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <a href="/" class="nav-logo">Great Books Tutor</a>
+    <div class="time-badge" id="time-badge" style="display: none;">
+      <span class="dot"></span>
+      <span id="time-display">30:00</span> remaining
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- Loading state -->
+    <div class="state active" id="state-loading">
+      <div class="spinner"></div>
+      <p style="color: var(--text-muted); font-size: 1rem;">Starting your session...</p>
+    </div>
+
+    <!-- Error state -->
+    <div class="state" id="state-error">
+      <div class="error-icon">📖</div>
+      <h2 class="error-title" id="error-title">Something went wrong</h2>
+      <p class="error-msg" id="error-msg">We couldn't start your session.</p>
+      <a id="back-link" href="/" class="btn-link">Back to homepage</a>
+    </div>
+
+    <!-- Connected state -->
+    <div class="state" id="state-connected">
+      <div class="voice-orb-container idle" id="talk-orb-container">
+        <div class="voice-ring"></div>
+        <div class="voice-ring"></div>
+        <div class="voice-ring"></div>
+        <div class="voice-orb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+        </div>
+      </div>
+      <p class="session-info" id="session-status">Listening — ask anything</p>
+      <div class="transcript" id="transcript"></div>
+    </div>
+
+    <!-- Session ended (has time remaining) -->
+    <div class="state" id="state-ended">
+      <div class="ended-icon">📖</div>
+      <h2 class="ended-title">Session paused</h2>
+      <p class="ended-msg">You have <strong id="remaining-display">--</strong> remaining. Come back anytime with this same link.</p>
+      <button class="btn-primary" id="restart-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+        Continue talking
+      </button>
+      <a id="portal-link" href="/" class="btn-secondary">Back to library</a>
+    </div>
+
+    <!-- Time depleted -->
+    <div class="state" id="state-depleted">
+      <div class="ended-icon">📖</div>
+      <h2 class="ended-title">Time's up!</h2>
+      <p class="ended-msg">You've used all 30 minutes of your session. We hope you learned a lot!</p>
+      <a id="portal-link-depleted" href="/" class="btn-primary">Back to library</a>
+      <a href="/" class="btn-secondary">Back to homepage</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="/">greatest-book-tutor.com</a> &middot; Voice by <a href="https://elevenlabs.io" target="_blank" rel="noopener">ElevenLabs</a>
+  </div>
+
+  <script type="module">
+    import { Conversation } from 'https://esm.sh/@elevenlabs/client';
+
+    // Extract subscriber token + book slug from URL path: /talk/abc123/book-slug
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const subscriberToken = pathParts[1] || '';
+    const bookSlug = pathParts[2] || '';
+
+    // Set portal links
+    const portalUrl = '/portal/' + subscriberToken;
+    const portalLink = document.getElementById('portal-link');
+    const portalLinkDepleted = document.getElementById('portal-link-depleted');
+    const backLink = document.getElementById('back-link');
+    if (portalLink) portalLink.href = portalUrl;
+    if (portalLinkDepleted) portalLinkDepleted.href = portalUrl;
+    if (backLink) backLink.href = portalUrl;
+
+    let sessionStartTime = null;
+    let timerInterval = null;
+    let remainingSeconds = 0;
+    let conversation = null;
+    let bookTitle = '';
+
+    // State management
+    function showState(stateId) {
+      document.querySelectorAll('.state').forEach(el => el.classList.remove('active'));
+      document.getElementById(stateId).classList.add('active');
+    }
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return m + ':' + String(s).padStart(2, '0');
+    }
+
+    function updateTimeBadge() {
+      const badge = document.getElementById('time-badge');
+      const display = document.getElementById('time-display');
+
+      if (remainingSeconds <= 0) {
+        badge.style.display = 'none';
+        return;
+      }
+
+      badge.style.display = 'inline-flex';
+      display.textContent = formatTime(remainingSeconds);
+
+      badge.classList.remove('warning', 'critical');
+      if (remainingSeconds <= 60) {
+        badge.classList.add('critical');
+      } else if (remainingSeconds <= 180) {
+        badge.classList.add('warning');
+      }
+    }
+
+    function startLocalTimer() {
+      sessionStartTime = Date.now();
+      updateTimeBadge();
+
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+        const displayRemaining = Math.max(0, remainingSeconds - elapsed);
+
+        const display = document.getElementById('time-display');
+        const badge = document.getElementById('time-badge');
+        display.textContent = formatTime(displayRemaining);
+
+        badge.classList.remove('warning', 'critical');
+        if (displayRemaining <= 60) {
+          badge.classList.add('critical');
+        } else if (displayRemaining <= 180) {
+          badge.classList.add('warning');
+        }
+
+        // Auto-end if local timer hits zero
+        if (displayRemaining <= 0) {
+          endSession();
+        }
+      }, 1000);
+    }
+
+    function stopLocalTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    // Start session: call API, get signed URL, connect via SDK
+    async function startSession() {
+      showState('state-loading');
+
+      try {
+        const res = await fetch(`/api/session?subscriber=${encodeURIComponent(subscriberToken)}&book=${encodeURIComponent(bookSlug)}`);
+        const data = await res.json();
+
+        if (!res.ok) {
+          if (res.status === 404) {
+            if (data.error === 'Agent coming soon') {
+              showError('Coming Soon', 'The tutor for "' + (data.book_title || bookSlug) + '" is still being prepared. Check back soon!');
+            } else {
+              showError('Session not found', 'This link may be invalid or the payment is still processing. Try again in a moment.');
+            }
+          } else if (res.status === 403) {
+            if (data.remaining === 0) {
+              showState('state-depleted');
+            } else {
+              showError('Access denied', data.error || 'Please check your subscription.');
+            }
+          } else if (res.status === 409) {
+            showError('Session in use', 'This session is active on another device. Please close it there first, or wait up to 30 minutes for it to auto-expire.');
+          } else {
+            showError('Something went wrong', data.error || 'Please try again.');
+          }
+          return;
+        }
+
+        remainingSeconds = data.remaining;
+        bookTitle = data.book_title || bookSlug;
+        document.title = bookTitle + ' — Great Books Tutor';
+
+        // Clear previous transcript
+        const transcript = document.getElementById('transcript');
+        if (transcript) transcript.innerHTML = '';
+
+        await connectAgent(data.signed_url);
+        showState('state-connected');
+        startLocalTimer();
+
+      } catch (err) {
+        console.error('Session start error:', err);
+        if (err.name === 'NotAllowedError') {
+          showError('Microphone required', 'Please allow microphone access and reload the page.');
+        } else {
+          showError('Connection error', 'Please check your internet connection and try again.');
+        }
+      }
+    }
+
+    async function connectAgent(signedUrl) {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      const orbContainer = document.getElementById('talk-orb-container');
+      const statusEl = document.getElementById('session-status');
+
+      conversation = await Conversation.startSession({
+        signedUrl: signedUrl,
+        onConnect: () => {
+          if (orbContainer) {
+            orbContainer.classList.remove('idle');
+            orbContainer.classList.add('active');
+          }
+          if (statusEl) statusEl.textContent = 'Connected — start speaking about ' + bookTitle;
+        },
+        onDisconnect: () => {
+          endSession();
+        },
+        onModeChange: ({ mode }) => {
+          if (!orbContainer) return;
+          orbContainer.classList.remove('speaking');
+          if (mode === 'speaking') {
+            orbContainer.classList.add('speaking');
+            if (statusEl) statusEl.textContent = 'Tutor is responding...';
+          } else {
+            if (statusEl) statusEl.textContent = 'Listening — ask anything about ' + bookTitle;
+          }
+        },
+        onMessage: ({ message, source }) => {
+          addTranscriptMessage(message, source);
+        },
+        onError: (error) => {
+          console.error('Conversation error:', error);
+        },
+      });
+    }
+
+    function addTranscriptMessage(text, source) {
+      const transcript = document.getElementById('transcript');
+      if (!transcript || !text.trim()) return;
+
+      const msg = document.createElement('div');
+      msg.className = 'transcript-msg ' + (source === 'ai' ? 'transcript-agent' : 'transcript-user');
+
+      const label = document.createElement('span');
+      label.className = 'transcript-label';
+      label.textContent = source === 'ai' ? 'Tutor' : 'You';
+
+      const content = document.createElement('span');
+      content.textContent = text;
+
+      msg.appendChild(label);
+      msg.appendChild(content);
+      transcript.appendChild(msg);
+      transcript.scrollTop = transcript.scrollHeight;
+    }
+
+    async function endSession() {
+      // Prevent double-ending
+      if (document.getElementById('state-ended').classList.contains('active') ||
+          document.getElementById('state-depleted').classList.contains('active')) {
+        return;
+      }
+
+      stopLocalTimer();
+
+      const orbContainer = document.getElementById('talk-orb-container');
+      if (orbContainer) {
+        orbContainer.classList.remove('active', 'speaking');
+        orbContainer.classList.add('idle');
+      }
+
+      if (conversation) {
+        await conversation.endSession();
+        conversation = null;
+      }
+
+      try {
+        const res = await fetch(`/api/end?subscriber=${encodeURIComponent(subscriberToken)}&book=${encodeURIComponent(bookSlug)}`, {
+          method: 'POST',
+        });
+        const data = await res.json();
+
+        remainingSeconds = data.remaining;
+
+        if (remainingSeconds <= 0) {
+          showState('state-depleted');
+          document.getElementById('time-badge').style.display = 'none';
+        } else {
+          document.getElementById('remaining-display').textContent = formatTime(remainingSeconds);
+          showState('state-ended');
+          updateTimeBadge();
+        }
+      } catch (err) {
+        console.error('End session error:', err);
+        showState('state-ended');
+        document.getElementById('remaining-display').textContent = 'some time';
+      }
+    }
+
+    function showError(title, message) {
+      document.getElementById('error-title').textContent = title;
+      document.getElementById('error-msg').textContent = message;
+      showState('state-error');
+    }
+
+    // End session when user leaves/closes tab
+    window.addEventListener('beforeunload', () => {
+      navigator.sendBeacon(`/api/end?subscriber=${encodeURIComponent(subscriberToken)}&book=${encodeURIComponent(bookSlug)}`, '');
+    });
+
+    // Restart button
+    document.getElementById('restart-btn').addEventListener('click', () => {
+      startSession();
+    });
+
+    // Validate and start
+    if (!subscriberToken || !/^[a-f0-9]{12}$/.test(subscriberToken)) {
+      showError('Invalid link', 'This session link appears to be invalid. Please check the URL.');
+    } else if (!bookSlug) {
+      showError('Missing book', 'No book was specified in the URL.');
+    } else {
+      startSession();
+    }
+  </script>
+
+</body>
+</html>

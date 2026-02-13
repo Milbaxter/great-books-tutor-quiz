@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Book Library — Great Books Tutor</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+  <meta name="robots" content="noindex, nofollow">
+
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      color: #1a1a1a;
+      background: #fafafa;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .header-logo {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111;
+      text-decoration: none;
+    }
+
+    .tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #2563eb;
+      background: #eff6ff;
+      padding: 6px 16px;
+      border-radius: 100px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px 24px;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #777;
+      margin-bottom: 4px;
+    }
+
+    .stat-card .stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #111;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 32px;
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .book-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .book-card:hover {
+      border-color: #2563eb;
+      box-shadow: 0 2px 12px rgba(37, 99, 235, 0.1);
+    }
+
+    .book-card.locked {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .book-card.locked:hover {
+      border-color: #e5e7eb;
+      box-shadow: none;
+    }
+
+    .book-number {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #2563eb;
+      background: #eff6ff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .book-card.completed .book-number {
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+
+    .book-card.locked .book-number {
+      background: #f3f4f6;
+      color: #9ca3af;
+    }
+
+    .book-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .book-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .book-author {
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    .book-status {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .book-status.available {
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .book-status.in-progress {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .book-status.completed {
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+
+    .book-status.locked {
+      background: #f3f4f6;
+      color: #9ca3af;
+    }
+
+    .book-status.limit-reached {
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    /* Loading & error states */
+    .state {
+      display: none;
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .state.active {
+      display: block;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #2563eb;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-msg {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .portal-content {
+      display: none;
+    }
+
+    .portal-content.active {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .book-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <a href="/" class="header-logo">Great Books Tutor</a>
+    <div class="tier-badge" id="tier-badge" style="display:none;">
+      <span id="tier-name"></span>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Loading state -->
+    <div class="state active" id="state-loading">
+      <div class="spinner"></div>
+      <p style="color: #777;">Loading your library...</p>
+    </div>
+
+    <!-- Error state -->
+    <div class="state" id="state-error">
+      <h1 style="margin-bottom:12px;">Something went wrong</h1>
+      <p class="error-msg" id="error-msg">Could not load your library.</p>
+      <p style="margin-top:24px;"><a href="/" style="color:#2563eb;">Back to homepage</a></p>
+    </div>
+
+    <!-- Portal content -->
+    <div class="portal-content" id="portal-content">
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-label">Books This Month</div>
+          <div class="stat-value"><span id="books-used">0</span> / <span id="books-limit">0</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Plan</div>
+          <div class="stat-value" id="plan-name">—</div>
+        </div>
+      </div>
+
+      <h1>Your Book Library</h1>
+      <p class="subtitle">Click any available book to start a 30-minute voice session with your tutor.</p>
+
+      <div class="book-grid" id="book-grid"></div>
+    </div>
+  </div>
+
+  <script>
+    // Extract subscriber token from URL path: /portal/abc123def456
+    var pathParts = window.location.pathname.split('/');
+    var subscriberToken = pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2];
+
+    function showState(id) {
+      document.querySelectorAll('.state').forEach(function(el) { el.classList.remove('active'); });
+      document.getElementById('portal-content').classList.remove('active');
+      if (id === 'portal-content') {
+        document.getElementById('portal-content').classList.add('active');
+      } else {
+        document.getElementById(id).classList.add('active');
+      }
+    }
+
+    function formatTime(seconds) {
+      var m = Math.floor(seconds / 60);
+      var s = seconds % 60;
+      return m + ':' + String(s).padStart(2, '0');
+    }
+
+    function getStatusLabel(book) {
+      switch (book.status) {
+        case 'available': return '<span class="book-status available">Start</span>';
+        case 'in_progress': return '<span class="book-status in-progress">Continue (' + formatTime(book.remaining) + ')</span>';
+        case 'completed': return '<span class="book-status completed">Completed</span>';
+        case 'locked': return '<span class="book-status locked">Coming Soon</span>';
+        case 'limit_reached': return '<span class="book-status limit-reached">Limit Reached</span>';
+        default: return '';
+      }
+    }
+
+    function tierDisplayName(tier) {
+      switch (tier) {
+        case 'light': return 'Light';
+        case 'monthly': return 'Monthly';
+        case 'pro': return 'Pro';
+        default: return tier;
+      }
+    }
+
+    async function loadPortal() {
+      if (!subscriberToken || !/^[a-f0-9]{12}$/.test(subscriberToken)) {
+        document.getElementById('error-msg').textContent = 'Invalid portal link. Please check the URL.';
+        showState('state-error');
+        return;
+      }
+
+      try {
+        var res = await fetch('/api/books?subscriber=' + encodeURIComponent(subscriberToken));
+        var data = await res.json();
+
+        if (!res.ok) {
+          document.getElementById('error-msg').textContent = data.error || 'Could not load your library.';
+          showState('state-error');
+          return;
+        }
+
+        // Update header
+        var tierBadge = document.getElementById('tier-badge');
+        tierBadge.style.display = 'inline-flex';
+        document.getElementById('tier-name').textContent = tierDisplayName(data.subscriber.tier) + ' Plan';
+
+        // Update stats
+        document.getElementById('books-used').textContent = data.subscriber.books_used;
+        document.getElementById('books-limit').textContent = data.subscriber.books_limit;
+        document.getElementById('plan-name').textContent = tierDisplayName(data.subscriber.tier);
+
+        // Render book grid
+        var grid = document.getElementById('book-grid');
+        grid.innerHTML = '';
+
+        data.books.forEach(function(book) {
+          var isClickable = book.status === 'available' || book.status === 'in_progress';
+          var card = document.createElement(isClickable ? 'a' : 'div');
+          card.className = 'book-card ' + book.status.replace('_', '-');
+          if (isClickable) {
+            card.href = '/talk/' + subscriberToken + '/' + book.slug;
+          }
+
+          card.innerHTML = '\
+            <div class="book-number">' + book.number + '</div>\
+            <div class="book-meta">\
+              <div class="book-title">' + book.title + '</div>\
+              <div class="book-author">' + book.author + '</div>\
+            </div>\
+            ' + getStatusLabel(book);
+
+          grid.appendChild(card);
+        });
+
+        showState('portal-content');
+      } catch (err) {
+        console.error('Portal load error:', err);
+        document.getElementById('error-msg').textContent = 'Could not connect. Please try again.';
+        showState('state-error');
+      }
+    }
+
+    loadPortal();
+  </script>
+
+</body>
+</html>

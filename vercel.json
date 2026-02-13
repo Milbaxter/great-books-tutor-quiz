@@ -1,16 +1,8 @@
 {
   "version": 2,
-  "name": "great-books-tutor-quiz",
-  "builds": [
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+  "name": "great-books-tutor",
+  "rewrites": [
+    { "source": "/portal/:token", "destination": "/portal.html" },
+    { "source": "/talk/:token/:book", "destination": "/talk.html" }
   ]
 }

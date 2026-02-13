@@ -283,6 +283,206 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* ---- VOICE ORB ---- */
+    .voice-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 40px 24px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .voice-orb-container {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .voice-orb {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 24px rgba(37, 99, 235, 0.25);
+      position: relative;
+      z-index: 2;
+    }
+
+    .voice-orb:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 40px rgba(37, 99, 235, 0.25);
+    }
+
+    .voice-orb svg {
+      width: 40px;
+      height: 40px;
+      color: #fff;
+    }
+
+    .voice-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid #2563eb;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    /* Idle — gentle breathing */
+    .voice-orb-container.idle .voice-ring:nth-child(1) {
+      animation: breathe 4s ease-in-out infinite;
+    }
+    .voice-orb-container.idle .voice-ring:nth-child(2) {
+      animation: breathe 4s ease-in-out infinite 1.3s;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.7); opacity: 0; }
+      50% { transform: scale(0.85); opacity: 0.12; }
+    }
+
+    /* Active / listening */
+    .voice-orb-container.active .voice-ring:nth-child(1) {
+      animation: sonar 2s ease-out infinite;
+    }
+    .voice-orb-container.active .voice-ring:nth-child(2) {
+      animation: sonar 2s ease-out infinite 0.6s;
+    }
+    .voice-orb-container.active .voice-ring:nth-child(3) {
+      animation: sonar 2s ease-out infinite 1.2s;
+    }
+    .voice-orb-container.active .voice-orb {
+      animation: orb-pulse 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes sonar {
+      0% { transform: scale(0.7); opacity: 0.35; }
+      100% { transform: scale(1.3); opacity: 0; }
+    }
+
+    @keyframes orb-pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.06); }
+    }
+
+    /* Speaking — agent is responding */
+    .voice-orb-container.speaking .voice-ring:nth-child(1) {
+      animation: speak-ring 1.2s ease-in-out infinite;
+    }
+    .voice-orb-container.speaking .voice-ring:nth-child(2) {
+      animation: speak-ring 1.2s ease-in-out infinite 0.4s;
+    }
+    .voice-orb-container.speaking .voice-ring:nth-child(3) {
+      animation: speak-ring 1.2s ease-in-out infinite 0.8s;
+    }
+    .voice-orb-container.speaking .voice-orb {
+      animation: orb-speak 0.8s ease-in-out infinite alternate;
+      box-shadow: 0 8px 48px rgba(37, 99, 235, 0.25);
+    }
+
+    @keyframes speak-ring {
+      0%, 100% { transform: scale(0.85); opacity: 0.18; }
+      50% { transform: scale(1.05); opacity: 0.06; }
+    }
+
+    @keyframes orb-speak {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
+    .voice-status {
+      font-size: 1rem;
+      color: #555;
+      text-align: center;
+    }
+
+    /* ---- TIME-UP OVERLAY ---- */
+    .time-up-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .time-up-overlay.visible {
+      display: flex;
+    }
+
+    .time-up-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 440px;
+      text-align: center;
+      animation: overlay-in 0.4s ease;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+    }
+
+    @keyframes overlay-in {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .time-up-card .time-up-icon {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .time-up-card h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .time-up-card p {
+      color: #555;
+      margin-bottom: 28px;
+      font-size: 1rem;
+    }
+
+    .time-up-card .cta-btn {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .time-up-dismiss {
+      display: block;
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: #777;
+      padding: 8px;
+      transition: color 0.2s;
+    }
+
+    .time-up-dismiss:hover {
+      color: #111;
+    }
+
     /* ---- SECTIONS ---- */
     section {
       padding: 80px 24px;
@@ -843,12 +1043,19 @@
     <div class="container">
       <p class="section-label">Try It Now</p>
       <h2>Talk to Your First Book Tutor</h2>
-      <p style="font-size:1.05rem;color:#555;max-width:520px;margin:0 auto 32px;">Experience a free 3-minute sample session on <strong>Man's Search for Meaning</strong> by Viktor Frankl. Click the microphone button in the bottom-right corner of your screen and start talking&mdash;this is exactly what every session feels like.</p>
-      <div class="try-hint" id="try-hint">
-        👉 Click the microphone button in the bottom-right corner to start your free conversation
+      <p style="font-size:1.05rem;color:#555;max-width:520px;margin:0 auto 32px;">Experience a free 90-second sample session on <strong>Man's Search for Meaning</strong> by Viktor Frankl. Click the orb and start talking&mdash;this is exactly what every paid session feels like.</p>
+
+      <div class="voice-stage">
+        <div class="voice-orb-container idle" id="voice-orb-container">
+          <div class="voice-ring"></div>
+          <div class="voice-ring"></div>
+          <div class="voice-ring"></div>
+          <div class="voice-orb" id="voice-orb" role="button" tabindex="0" aria-label="Start or stop the voice conversation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+          </div>
+        </div>
+        <p class="voice-status" id="voice-status">Click to start your free conversation</p>
       </div>
-      <elevenlabs-convai agent-id="agent_8801kh54rqykf3han31mceg4x659"></elevenlabs-convai>
-      <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
     </div>
   </section>
 
@@ -1163,7 +1370,7 @@
             <li>One expert tutor per book</li>
             <li>Cancel anytime</li>
           </ul>
-          <a href="https://buy.stripe.com/6oUbJ08nQ1i2bH56vi2880g" class="cta-btn cta-btn-outline">Get Started</a>
+          <button onclick="startCheckout('light')" class="cta-btn cta-btn-outline" id="checkout-light" style="border:2px solid #2563eb;cursor:pointer;font-family:inherit;">Get Started</button>
         </div>
 
         <div class="pricing-card featured">
@@ -1179,7 +1386,7 @@
             <li>One expert tutor per book</li>
             <li>Cancel anytime</li>
           </ul>
-          <a href="https://buy.stripe.com/aFa00icE61i2eTh06U2880f" class="cta-btn">Subscribe Monthly</a>
+          <button onclick="startCheckout('monthly')" class="cta-btn" id="checkout-monthly" style="cursor:pointer;font-family:inherit;border:none;">Subscribe Monthly</button>
         </div>
 
         <div class="pricing-card">
@@ -1195,7 +1402,7 @@
             <li>One expert tutor per book</li>
             <li>Cancel anytime</li>
           </ul>
-          <a href="https://buy.stripe.com/6oU28q47A0dY8uTaLy2880i" class="cta-btn cta-btn-outline">Subscribe Pro</a>
+          <button onclick="startCheckout('pro')" class="cta-btn cta-btn-outline" id="checkout-pro" style="border:2px solid #2563eb;cursor:pointer;font-family:inherit;">Subscribe Pro</button>
         </div>
       </div>
     </div>
@@ -1301,26 +1508,199 @@
     <p style="margin-top:8px;"><a href="#contact" style="color:#777;text-decoration:none;">Contact</a> &middot; <a href="https://x.com/wizard_mili" target="_blank" rel="noopener" style="color:#777;text-decoration:none;">X</a></p>
   </footer>
 
-<script>
-function scrollToTryIt() {
-  var section = document.getElementById('try-it');
-  if (!section) return;
-  section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  // Highlight the section
-  section.classList.add('try-section-highlight');
-  setTimeout(function() { section.classList.remove('try-section-highlight'); }, 2500);
-  // Show the hint pointing to the widget
-  var hint = document.getElementById('try-hint');
-  if (hint) hint.style.display = 'block';
-  // Try to auto-click the ElevenLabs widget button
-  setTimeout(function() {
-    var widget = document.querySelector('elevenlabs-convai');
-    if (widget && widget.shadowRoot) {
-      var btn = widget.shadowRoot.querySelector('button');
-      if (btn) btn.click();
+  <!-- TIME'S UP OVERLAY -->
+  <div class="time-up-overlay" id="time-up-overlay" role="dialog" aria-labelledby="time-up-heading" aria-modal="true">
+    <div class="time-up-card">
+      <span class="time-up-icon" aria-hidden="true">📖</span>
+      <h2 id="time-up-heading">Want the full 30-minute session?</h2>
+      <p>90 seconds wasn't enough. Subscribe to get 30-minute sessions for every book in our library.</p>
+      <a href="#pricing" class="cta-btn" id="time-up-cta" onclick="document.getElementById('time-up-overlay').classList.remove('visible');document.body.style.overflow='';">See pricing plans</a>
+      <button class="time-up-dismiss" id="time-up-dismiss">No thanks, maybe later</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { Conversation } from 'https://esm.sh/@elevenlabs/client';
+
+    // ===== FREE-TIER VOICE AGENT =====
+    const FREE_TIME = 90; // seconds
+    const AGENT_ID = 'agent_8801kh54rqykf3han31mceg4x659';
+    const TRIAL_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 hours
+    const TRIAL_KEY = 'greatbooks_trial_mans-search-for-meaning';
+    let sessionTimeout = null;
+    let sessionActive = false;
+    let conversation = null;
+
+    const statusEl = document.getElementById('voice-status');
+    const orbContainer = document.getElementById('voice-orb-container');
+    const orbEl = document.getElementById('voice-orb');
+    const overlayEl = document.getElementById('time-up-overlay');
+    const dismissBtn = document.getElementById('time-up-dismiss');
+
+    // Check if free trial was already used
+    function isTrialUsed() {
+      try {
+        const usedAt = localStorage.getItem(TRIAL_KEY);
+        if (!usedAt) return false;
+        return (Date.now() - parseInt(usedAt, 10)) < TRIAL_COOLDOWN_MS;
+      } catch(e) { return false; }
     }
-  }, 800);
-}
-</script>
+
+    function markTrialUsed() {
+      try { localStorage.setItem(TRIAL_KEY, Date.now().toString()); } catch(e) {}
+    }
+
+    // If trial already used on page load, update UI
+    if (isTrialUsed()) {
+      statusEl.textContent = 'Free session used — subscribe for 30-minute sessions';
+    }
+
+    function handleStartClick() {
+      if (sessionActive) return;
+      if (isTrialUsed()) {
+        showTimeUp();
+        return;
+      }
+      startSession();
+    }
+
+    async function startSession() {
+      if (sessionActive) return;
+      sessionActive = true;
+
+      orbContainer.classList.remove('idle');
+      orbContainer.classList.add('active');
+      statusEl.textContent = 'Connecting...';
+
+      try {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        conversation = await Conversation.startSession({
+          agentId: AGENT_ID,
+          onConnect: () => {
+            statusEl.textContent = 'Connected — start speaking';
+          },
+          onDisconnect: () => {
+            if (sessionActive) {
+              endSession();
+            }
+          },
+          onModeChange: ({ mode }) => {
+            orbContainer.classList.remove('speaking');
+            if (mode === 'speaking') {
+              orbContainer.classList.add('speaking');
+              statusEl.textContent = 'Tutor is responding...';
+            } else {
+              statusEl.textContent = "Listening — ask anything about Man's Search for Meaning";
+            }
+          },
+          onError: (error) => {
+            console.error('Conversation error:', error);
+            statusEl.textContent = 'Something went wrong. Click the orb to try again.';
+            sessionActive = false;
+            orbContainer.classList.remove('active', 'speaking');
+            orbContainer.classList.add('idle');
+          },
+        });
+
+        // End session after free time expires
+        sessionTimeout = setTimeout(() => {
+          endSession();
+          markTrialUsed();
+          showTimeUp();
+        }, FREE_TIME * 1000);
+
+      } catch (err) {
+        console.error('Failed to start session:', err);
+        sessionActive = false;
+        orbContainer.classList.remove('active');
+        orbContainer.classList.add('idle');
+        if (err.name === 'NotAllowedError') {
+          statusEl.textContent = 'Microphone access is required. Please allow it and try again.';
+        } else {
+          statusEl.textContent = 'Could not connect. Click the orb to try again.';
+        }
+      }
+    }
+
+    async function endSession() {
+      sessionActive = false;
+      clearTimeout(sessionTimeout);
+      orbContainer.classList.remove('active', 'speaking');
+      orbContainer.classList.add('idle');
+      statusEl.textContent = 'Session ended';
+
+      if (conversation) {
+        await conversation.endSession();
+        conversation = null;
+      }
+    }
+
+    function showTimeUp() {
+      overlayEl.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function hideTimeUp() {
+      overlayEl.classList.remove('visible');
+      document.body.style.overflow = '';
+      orbContainer.classList.remove('active', 'speaking');
+      orbContainer.classList.add('idle');
+      sessionActive = false;
+      statusEl.textContent = 'Free session used — subscribe for 30-minute sessions';
+    }
+
+    // Event listeners
+    orbEl.addEventListener('click', handleStartClick);
+
+    orbEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleStartClick();
+      }
+    });
+
+    dismissBtn.addEventListener('click', hideTimeUp);
+
+    // Close overlay on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlayEl.classList.contains('visible')) {
+        hideTimeUp();
+      }
+    });
+
+    // ===== STRIPE CHECKOUT =====
+    window.startCheckout = async function(tier) {
+      const btnId = 'checkout-' + tier;
+      try {
+        const btn = document.getElementById(btnId);
+        const originalText = btn.textContent;
+        btn.textContent = 'Redirecting...';
+        btn.disabled = true;
+
+        const res = await fetch('/api/checkout?tier=' + tier, { method: 'POST' });
+        const data = await res.json();
+
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert('Something went wrong. Please try again.');
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }
+      } catch (err) {
+        console.error('Checkout error:', err);
+        alert('Something went wrong. Please try again.');
+      }
+    };
+
+    // ===== SCROLL TO TRY IT =====
+    window.scrollToTryIt = function() {
+      var section = document.getElementById('try-it');
+      if (!section) return;
+      section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(handleStartClick, 600);
+    };
+  </script>
 </body>
 </html>
